@@ -4,7 +4,7 @@ An interactive Gantt chart visualizing a 10-week learning plan for developing a 
 
 ## 🚀 Live Demo
 
-Visit the live site: `https://YOUR_USERNAME.github.io/GanttChart`
+Visit the live site: `https://isnakolah.github.io/GanttChart`
 
 ## ✨ Features
 
