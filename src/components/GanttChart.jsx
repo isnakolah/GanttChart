@@ -468,7 +468,7 @@ export default function GanttChart() {
 
   return (
     <div
-      className="min-h-screen p-4 font-sans"
+      className="min-h-screen p-4 sm:p-6 lg:p-8 font-sans"
       style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)" }}>
       <style>{`
         @keyframes glow {
@@ -539,80 +539,88 @@ export default function GanttChart() {
         </div>
 
         {/* Gantt Chart */}
-        <div className="rounded-2xl p-5 mb-6" style={darkGlass}>
-          {/* Week Headers */}
-          <div className="flex mb-4 ml-48">
-            {weeks.map((w) => (
-              <div
-                key={w}
-                className="flex-1 text-center py-2 rounded-lg mx-0.5 cursor-pointer transition-all duration-300"
-                style={{
-                  background:
-                    hoveredWeek === w ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)" : "rgba(51, 65, 85, 0.5)",
-                  boxShadow: hoveredWeek === w ? "0 0 20px rgba(59, 130, 246, 0.5)" : "none",
-                  transform: hoveredWeek === w ? "scale(1.05)" : "scale(1)",
-                }}
-                onMouseEnter={() => setHoveredWeek(w)}
-                onMouseLeave={() => setHoveredWeek(null)}>
-                <span className="text-[10px] text-slate-500 block">Week</span>
-                <span className={`font-bold text-sm ${hoveredWeek === w ? "text-white" : "text-slate-300"}`}>{w}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Task Rows */}
-          <div className="space-y-2">
-            {tasks.map((task) => {
-              const cat = categories[task.category];
-              const isSelected = selectedTask?.id === task.id;
-              return (
-                <div key={task.id} className="flex items-center">
-                  <div className="w-48 pr-3 flex-shrink-0">
-                    <p
-                      className="text-xs font-medium truncate cursor-pointer transition-all duration-300"
+        <div className="rounded-2xl p-4 sm:p-5 mb-6" style={darkGlass}>
+          <div className="overflow-x-auto -mx-2 sm:mx-0">
+            <div className="min-w-[720px] px-2 sm:px-0">
+              <div className="grid items-center gap-3 mb-4 grid-cols-[140px_1fr] sm:grid-cols-[180px_1fr]">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">Task</div>
+                <div className="grid grid-cols-10 gap-1">
+                  {weeks.map((w) => (
+                    <div
+                      key={w}
+                      className="text-center py-2 rounded-lg cursor-pointer transition-all duration-300"
                       style={{
-                        color: isSelected ? cat.color : "#94a3b8",
-                        textShadow: isSelected ? `0 0 10px ${cat.color}` : "none",
+                        background:
+                          hoveredWeek === w
+                            ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                            : "rgba(51, 65, 85, 0.5)",
+                        boxShadow: hoveredWeek === w ? "0 0 20px rgba(59, 130, 246, 0.5)" : "none",
+                        transform: hoveredWeek === w ? "translateY(-2px)" : "translateY(0)",
                       }}
-                      onClick={() => setSelectedTask(isSelected ? null : task)}
-                      title={task.name}>
-                      {task.name}
-                    </p>
-                  </div>
-                  <div className="flex-1 relative h-10">
-                    <div className="absolute inset-0 flex">
-                      {weeks.map((w) => (
-                        <div
-                          key={w}
-                          className="flex-1 border-l transition-colors duration-300"
-                          style={{
-                            borderColor: "rgba(71, 85, 105, 0.3)",
-                            background: hoveredWeek === w ? "rgba(59, 130, 246, 0.05)" : "transparent",
-                          }}
-                        />
-                      ))}
+                      onMouseEnter={() => setHoveredWeek(w)}
+                      onMouseLeave={() => setHoveredWeek(null)}>
+                      <span className="text-[10px] text-slate-500 block">Week</span>
+                      <span className={`font-bold text-sm ${hoveredWeek === w ? "text-white" : "text-slate-300"}`}>
+                        {w}
+                      </span>
                     </div>
-                    <div className="absolute inset-y-1 left-0 right-0">
-                      <div
-                        className="absolute h-full rounded-lg cursor-pointer flex items-center px-3 transition-all duration-300"
-                        style={{
-                          left: `${(task.week - 1) * 10}%`,
-                          width: `${task.duration * 10 - 1}%`,
-                          background: isSelected ? cat.gradient : cat.bg,
-                          border: `1px solid ${cat.color}50`,
-                          color: isSelected ? "white" : cat.color,
-                          transform: isSelected ? "scale(1.05)" : "scale(1)",
-                          boxShadow: isSelected ? `0 0 25px ${cat.color}60` : `0 0 10px ${cat.color}20`,
-                          zIndex: isSelected ? 10 : 1,
-                        }}
-                        onClick={() => setSelectedTask(isSelected ? null : task)}>
-                        <span className="text-xs font-bold">{task.hours}h</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {tasks.map((task) => {
+                  const cat = categories[task.category];
+                  const isSelected = selectedTask?.id === task.id;
+                  return (
+                    <div
+                      key={task.id}
+                      className="grid items-center gap-3 grid-cols-[140px_1fr] sm:grid-cols-[180px_1fr]">
+                      <div className="min-w-0">
+                        <p
+                          className="text-xs sm:text-sm font-medium leading-snug cursor-pointer transition-all duration-300 line-clamp-2 sm:line-clamp-1"
+                          style={{
+                            color: isSelected ? cat.color : "#94a3b8",
+                            textShadow: isSelected ? `0 0 10px ${cat.color}` : "none",
+                          }}
+                          onClick={() => setSelectedTask(isSelected ? null : task)}
+                          title={task.name}>
+                          {task.name}
+                        </p>
+                      </div>
+                      <div className="relative h-12 grid grid-cols-10 gap-1 items-center">
+                        <div className="absolute inset-0 grid grid-cols-10 gap-1 pointer-events-none">
+                          {weeks.map((w) => (
+                            <div
+                              key={w}
+                              className="rounded-md border transition-colors duration-300"
+                              style={{
+                                borderColor: "rgba(71, 85, 105, 0.35)",
+                                background: hoveredWeek === w ? "rgba(59, 130, 246, 0.06)" : "rgba(15, 23, 42, 0.4)",
+                              }}
+                            />
+                          ))}
+                        </div>
+                        <div
+                          className="relative h-full rounded-lg cursor-pointer flex items-center px-3 transition-all duration-300"
+                          style={{
+                            gridColumn: `${task.week} / span ${task.duration}`,
+                            background: isSelected ? cat.gradient : cat.bg,
+                            border: `1px solid ${cat.color}50`,
+                            color: isSelected ? "white" : cat.color,
+                            transform: isSelected ? "scale(1.05)" : "scale(1)",
+                            boxShadow: isSelected ? `0 0 25px ${cat.color}60` : `0 0 10px ${cat.color}20`,
+                            zIndex: isSelected ? 10 : 1,
+                          }}
+                          onClick={() => setSelectedTask(isSelected ? null : task)}>
+                          <span className="text-xs font-bold">{task.hours}h</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
 
